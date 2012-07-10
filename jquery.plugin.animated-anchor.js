@@ -1,6 +1,6 @@
 /* =============================================================
- * jQuery animated-anchor plugin v0.2
- * https://github.com/stvnwrgs/animated-anchros
+ * animated-anchor plugin v0.2
+ * http://
  * =============================================================
  * Copyright 2012 Steven Wirges, Inc.
  *
@@ -8,7 +8,7 @@
  *
  *
  *      // HOW TO USE
- * 
+ *
  *  Example :
  *      $('.anchor').animatedanchor(); 
  *
@@ -26,7 +26,7 @@
  * Methods:
  *     scrollTo(element)
  * ============================================================== */
- 
+
 !function ($) {
 
     "use strict"; // jshint ;_;
@@ -34,10 +34,14 @@
     var methods = {
         init : function (options) {
             $.fn.animatedanchor.options = $.extend({},  $.fn.animatedanchor.defaults, options);
+            var options = $.fn.animatedanchor.options;
             var hash = window.location.hash;
-            alert(hash);
-            if(hash) {
-                methods.scrollTo($('hash'));
+            
+            if(hash != "") {
+                hash = hash.replace('#_', '#');
+                methods.scrollTo($(hash));
+            } else {
+                $('html,body').animate({scrollTop: 0}, options.delay, options.easing);
             }
 
             return this.each(function(){
@@ -54,10 +58,8 @@
 
                 if ($target.length) {
                     var targetOffset = $target.offset().top - options.offset;
-
-                    $('html,body').animate({scrollTop: targetOffset}, options.delay, options.easing, function () {
-                        window.location.hash = "#" + $($target).attr('id');
-                    } );
+                    window.location.hash = "#_" + $($target).attr('id');
+                    $('html,body').animate({scrollTop: targetOffset}, options.delay, options.easing);
                     return false;
                 }
             }
